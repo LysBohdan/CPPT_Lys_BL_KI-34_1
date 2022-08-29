@@ -7,7 +7,6 @@ import java.util.*;
  * @author Lys Bohdan
  * @version 1.0
  * @since version 1.0
- *
  */
 
 public class Lab2LysKI34 {
@@ -16,12 +15,11 @@ public class Lab2LysKI34 {
      *
      * @param args function parameter
      * @throws FileNotFoundException throw about non-existent file
-     *
      */
 
     public static void main(String[] args) throws FileNotFoundException {
         int arrsize;
-        String[][] arr;
+        char[][] arr;
         String filler;
 
         File myFile = new File("Lab2LysKI34.txt");
@@ -33,49 +31,37 @@ public class Lab2LysKI34 {
         arrsize = myScanSys.nextInt();
         myScanSys.nextLine();
 
-        arr = new String[arrsize][arrsize];
-        for (int i = 0; i < arrsize; i++) {
-            for(int j = 0; j<arrsize; j++)
-            arr[i][j] = " ";
-        }
-
         System.out.print("Input filler symbol: ");
         filler = myScanSys.nextLine();
 
+        arr = new char[arrsize][(int) arrsize / 2];
+        for (int i = 0; i < arrsize; i++) {
+            if (i < (int) arrsize / 2) {
+                for (int j = 0; j < (int) arrsize / 2; j++) {/*System.out.print("\t");*/}
+            }
+            for (int j = 0; j < (int) arrsize / 2; j++) {
+                arr[i][j] = ' ';
+            }
+        }
         if (filler.length() == 1) {
             for (int i = 0; i < arrsize; i++) {
-                if (i < arrsize / 2) {
-                    for (int j = 0; j < arrsize; j++) {
-                        if (j >= arrsize / 2) {
-                            arr[i][j] = filler;
-                            System.out.print(arr[i][j] + " ");
-                            myWriter.print(arr[i][j] + " ");
-                        }
-                        else {
-                            System.out.print("  ");
-                            myWriter.print("  ");
-                        }
+                if (i < (int) arrsize / 2) {
+                    for (int j = 0; j < (int) arrsize / 2; j++) {
+                        System.out.print("  ");
+                        myWriter.print("  ");
                     }
                 }
-                else{
-                    for (int j = 0; j < arrsize; j++) {
-                        if (j < arrsize / 2) {
-                            arr[i][j] = filler;
-                            System.out.print(arr[i][j] + " ");
-                            myWriter.print(arr[i][j] + " ");
-                        }
-                        else {
-                            System.out.print("  ");
-                            myWriter.print("  ");
-                        }
-                    }
+                for (int j = 0; j < (int) arrsize / 2; j++) {
+                    arr[i][j] = (char) filler.codePointAt(0);
+                    ;
+                    System.out.print(arr[i][j] + " ");
+                    myWriter.print(arr[i][j] + " ");
                 }
+                myWriter.println();
                 System.out.println();
-                myWriter.print("\n");
             }
-            System.out.print("\n");
-            myWriter.print("\n");
         }
+
         if (filler.length() == 0) {
             System.out.print("\nNo filler symbol entered");
             System.exit(0);
@@ -84,8 +70,6 @@ public class Lab2LysKI34 {
             System.out.print("\nToo many filler symbol");
             System.exit(0);
         }
-
-
         myWriter.flush();
         myWriter.close();
     }
