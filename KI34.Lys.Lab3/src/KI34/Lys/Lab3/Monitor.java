@@ -252,7 +252,7 @@ public class Monitor {
             System.out.println("Selected resolution - " + this.resolution);
             myWrite.println("Розширення монітура зміненно з " + this.resolution + " на " + resolution);
             this.resolution = resolution;
-            System.out.println("Resolution changed - " + resolution);
+            System.out.println("Resolution changed - " + this.resolution);
 
         } else {
             System.out.println("Your monitor is off!!! ");
