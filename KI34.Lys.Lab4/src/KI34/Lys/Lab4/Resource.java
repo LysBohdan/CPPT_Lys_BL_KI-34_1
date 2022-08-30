@@ -1,5 +1,5 @@
 /**
- * lab 3 package
+ * lab 4 package
  */
 
 package KI34.Lys.Lab4;
