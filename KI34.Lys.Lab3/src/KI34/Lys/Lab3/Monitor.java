@@ -14,11 +14,9 @@ import java.io.*;
 public class Monitor {
     private double hz;
     private String name;
-    private String resolution;
-    private double diagonal;
     private String matrix;
-    private double BrightDisplay;
-    private Status status;
+    private MonitorButton status;
+    private Display display;
     private PrintWriter myWrite;
     private String monitorFormat;
 
@@ -29,13 +27,11 @@ public class Monitor {
 
     public Monitor() throws FileNotFoundException {
         matrix = "None";
-        diagonal = 0;
         name = "None";
-        resolution = "None";
         hz = 0;
-        BrightDisplay = 0;
         monitorFormat = "None";
         myWrite = new PrintWriter("Log.txt");
+        status = new MonitorButton();
     }
 
     /**
@@ -45,20 +41,20 @@ public class Monitor {
      * @param matrix <code>matrix</code> Monitor matrix
      * @param resolution <code>resolution</code> Monitor resolution
      * @param hz <code>hz</code> Monitor refresh rate
-     * @param BrightDisplay <code>BrightDisplay</code> The brightness of the monitor display
+     * @param brightDisplay <code>BrightDisplay</code> The brightness of the monitor display
      * @param monitorFormat <code>monitorFormat</code> Monitor screen format
      * @throws FileNotFoundException
      */
 
-    public Monitor(String name, double diagonal, String matrix, String resolution, double hz, double BrightDisplay, String monitorFormat) throws FileNotFoundException {
+
+    public Monitor(String name, double brightDisplay, String matrix, double diagonal, String resolution, double hz, String monitorFormat) throws FileNotFoundException {
         this.matrix = matrix;
-        this.diagonal = diagonal;
         this.name = name;
-        this.resolution = resolution;
         this.hz = hz;
-        this.BrightDisplay = BrightDisplay;
         this.monitorFormat = monitorFormat;
         myWrite = new PrintWriter("Log.txt");
+        status = new MonitorButton();
+        display = new Display(brightDisplay, diagonal, resolution);
     }
 
     /**
@@ -77,21 +73,6 @@ public class Monitor {
         return name;
     }
 
-    /**
-     * Method returns monitor`s resolution
-     * @return monitor`s resolution
-     */
-    public String getResolution() {
-        return resolution;
-    }
-
-    /**
-     * Method returns monitor`s diagonal
-     * @return monitor`s diagonal
-     */
-    public double getDiagonal() {
-        return diagonal;
-    }
 
     /**
      * Method returns monitor`s matrix type
@@ -102,11 +83,11 @@ public class Monitor {
     }
 
     /**
-     * Method returns monitor`s display brightness
-     * @return monitor`s display brightness
+     * Method returns monitor`s status off/on
+     * @return monitor`s status off/on
      */
-    public double getBrightDisplay() {
-        return BrightDisplay;
+    public MonitorButton getStatus() {
+        return status;
     }
 
     /**
@@ -126,22 +107,13 @@ public class Monitor {
     }
 
     /**
-     * Method sets the new monitor`s resolution and format
-     * @param resolution <code>resolution</code> monitor`s resolution
+     * Method sets the new monitor`s format
      * @param monitorFormat <code>monitorFormat</code> monitor`s screen format
      */
-    public void setResolution(String resolution, String monitorFormat) {
-        this.resolution = resolution;
+    public void setResolution(String monitorFormat) {
         this.monitorFormat = monitorFormat;
     }
 
-    /**
-     * Method sets the new monitor`s diagonal
-     * @param diagonal <code>diagonal</code> monitor`s diagonal
-     */
-    public void setDiagonal(double diagonal) {
-        this.diagonal = diagonal;
-    }
 
     /**
      * Method sets the new monitor`s matrix type
@@ -152,37 +124,24 @@ public class Monitor {
     }
 
     /**
-     * Method sets the new monitor`s display brightness
-     * @param brightDisplay <code>brightDisplay</code> monitor`s display brightness
+     * Method sets the new monitor`s status off/on
+     * @param status <code>matrix</code> monitor`s status off/on
      */
-    public void setBrightDisplay(double brightDisplay) {
-        BrightDisplay = brightDisplay;
-    }
-
-    /**
-     * Method simulates monitor`s off/on
-     */
-    public void off_onMonitor(Status comand) {
-        if (comand == Status.ON) {
-            myWrite.println("Монітор включено.");
-            status = Status.ON;
-        } else {
-            status = Status.OFF;
-            myWrite.println("Монітор виключено.");
-        }
+    public void setStatus(MonitorButton status) {
+        this.status = status;
     }
 
     /**
      * Method return monitor`s settings which we set
      */
     public void getSettings() {
-        if (status == Status.ON) {
+        if (status.getStatus() == Status.ON) {
             System.out.println("Name - " + name);
-            System.out.println("Diagonal - " + diagonal);
-            System.out.println("Resolution - " + resolution);
+            System.out.println("Diagonal - " + display.getDiagonal());
+            System.out.println("Resolution - " + display.getResolution());
             System.out.println("Hz - " + hz);
             System.out.println("Matrix - " + matrix);
-            System.out.println("Bright - " + BrightDisplay);
+            System.out.println("Bright - " + display.getBrightDisplay());
             myWrite.println("Налаштування монітора виведенно.");
         } else {
             System.out.println("Your monitor is off!!! ");
@@ -195,7 +154,7 @@ public class Monitor {
      * Method simulates increment monitor`s display brightness
      */
     public void brightDisplayPlus(int change) {
-        BrightDisplay = BrightDisplay + change;
+        display.setBrightDisplay(display.getBrightDisplay() + change);
         myWrite.println("Яскравість монітора збільшенна.");
     }
 
@@ -203,7 +162,7 @@ public class Monitor {
      * Method simulates decrement monitor`s display brightness
      */
     public void brightDisplayMinus(int change) {
-        BrightDisplay = BrightDisplay - change;
+        display.setBrightDisplay(display.getBrightDisplay() - change);
         myWrite.println("Яскравість монітора зменшенна.");
     }
 
@@ -221,7 +180,7 @@ public class Monitor {
      * Method simulates changing monitor`s refresh rate
      */
     public void changeHz(int hz) {
-        if (status == Status.ON) {
+        if (status.getStatus() == Status.ON) {
             System.out.println("Selected Hz - " + this.hz);
             myWrite.println("Частота оновлення монітура зміненна з " + this.hz + " на " + hz);
             this.hz = hz;
@@ -248,11 +207,11 @@ public class Monitor {
      * Method simulates changing monitor`s resolution
      */
     public void changeResolution(String resolution) {
-        if (status == Status.ON) {
-            System.out.println("Selected resolution - " + this.resolution);
-            myWrite.println("Розширення монітура зміненно з " + this.resolution + " на " + resolution);
-            this.resolution = resolution;
-            System.out.println("Resolution changed - " + this.resolution);
+        if (status.getStatus() == Status.ON) {
+            System.out.println("Selected resolution - " + display.getResolution());
+            myWrite.println("Розширення монітура зміненно з " + display.getResolution() + " на " + resolution);
+            display.setResolution(resolution);
+            System.out.println("Resolution changed - " + resolution);
 
         } else {
             System.out.println("Your monitor is off!!! ");

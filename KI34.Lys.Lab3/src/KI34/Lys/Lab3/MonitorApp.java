@@ -3,8 +3,6 @@
  */
 
 package KI34.Lys.Lab3;
-
-import static java.lang.System.out;
 import java.io.*;
 /**
  * Monitor Application class implements main method for Monitor
@@ -20,9 +18,10 @@ public class MonitorApp {
      */
     public static void main(String[] args)  throws FileNotFoundException {
 
-        Monitor object = new Monitor("MSI", 24, "LED", "1920 x 1080", 144, 100, "16:9");
+       Monitor object = new Monitor("MSI", 100, "LED", 23.4,"1920x1080",  144, "16:9");
+        MonitorButton button = new MonitorButton();
 
-        object.off_onMonitor(Status.ON);
+        object.getStatus().off_onMonitor(Status.ON);
         object.getSettings();
         object.brightDisplayPlus(25);
         object.brightDisplayMinus(63);
@@ -33,7 +32,8 @@ public class MonitorApp {
         object.changeMonitorFormat("4:3");
         object.getSettings();
 
-        object.off_onMonitor(Status.OFF);
+        object.getStatus().off_onMonitor(Status.OFF);
         object.dispose();
+
     }
 }

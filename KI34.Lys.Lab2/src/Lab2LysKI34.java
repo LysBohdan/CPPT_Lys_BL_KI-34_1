@@ -35,14 +35,17 @@ public class Lab2LysKI34 {
         filler = myScanSys.nextLine();
 
         arr = new char[arrsize][(int) arrsize / 2];
+        /*
         for (int i = 0; i < arrsize; i++) {
             if (i < (int) arrsize / 2) {
-                for (int j = 0; j < (int) arrsize / 2; j++) {/*System.out.print("\t");*/}
+                for (int j = 0; j < (int) arrsize / 2; j++) {}
             }
             for (int j = 0; j < (int) arrsize / 2; j++) {
                 arr[i][j] = ' ';
             }
         }
+        */
+
         if (filler.length() == 1) {
             for (int i = 0; i < arrsize; i++) {
                 if (i < (int) arrsize / 2) {
@@ -52,8 +55,13 @@ public class Lab2LysKI34 {
                     }
                 }
                 for (int j = 0; j < (int) arrsize / 2; j++) {
-                    arr[i][j] = (char) filler.codePointAt(0);
-                    ;
+                    if(i == 0 || i == arrsize-1)
+                    {
+                        arr[i][j] = 'o';
+                    }
+                    else {
+                        arr[i][j] = (char) filler.codePointAt(0);
+                    }
                     System.out.print(arr[i][j] + " ");
                     myWriter.print(arr[i][j] + " ");
                 }
