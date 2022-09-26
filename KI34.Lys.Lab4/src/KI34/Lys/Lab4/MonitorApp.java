@@ -19,9 +19,10 @@ public class MonitorApp {
      */
     public static void main(String[] args)  throws FileNotFoundException {
 
-        TouchScreen object = new TouchScreen(1000000, 6.0, "MSI", 24, "LED", "1920 x 1080", 144, 100, "16:9");
+        TouchScreen object = new TouchScreen(20000, 6.0, "MSI", 100, "LED", 23.4,"1920x1080",  144, "16:9");
 
-        object.off_onMonitor(Status.ON);
+        object.getStatus().off_onMonitor(Status.ON);
+
         object.getSettings();
         object.brightDisplayPlus(25);
         object.brightDisplayMinus(63);
@@ -32,10 +33,11 @@ public class MonitorApp {
         object.changeMonitorFormat("4:3");
         object.getSettings();
 
+        object.getResource();
         object.screenResource(578);
         object.getResource();
 
-        object.off_onMonitor(Status.OFF);
+        object.getStatus().off_onMonitor(Status.OFF);
         object.dispose();
     }
 }

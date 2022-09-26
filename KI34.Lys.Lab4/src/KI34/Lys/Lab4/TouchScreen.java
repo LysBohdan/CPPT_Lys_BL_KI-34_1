@@ -12,9 +12,10 @@ import java.io.FileNotFoundException;
  *  * @version 1.0
  **/
 public class TouchScreen extends Monitor implements PresForce {
-    private int resource;
-    private final double presForceConst = 2.5;
-    private double presForce;
+    protected int resource;
+    private MonitorButton status;
+    protected final double presForceConst = 2.5;
+    protected double presForce;
 
     /**
      * Constructor
@@ -32,24 +33,25 @@ public class TouchScreen extends Monitor implements PresForce {
      * @param matrix <code>matrix</code> Monitor matrix
      * @param resolution <code>resolution</code> Monitor resolution
      * @param hz <code>hz</code> Monitor refresh rate
-     * @param BrightDisplay <code>BrightDisplay</code> The brightness of the monitor display
+     * @param brightDisplay <code>BrightDisplay</code> The brightness of the monitor display
      * @param monitorFormat <code>monitorFormat</code> Monitor screen format
      * @param resource <code>resource</code> Touch monitor resource
      * @param presForce <code>presForce</code> Optimal pressing force
      * @throws FileNotFoundException
      */
 
-    public TouchScreen(int resource, double presForce, String name, double diagonal, String matrix, String resolution, double hz, double BrightDisplay, String monitorFormat) throws FileNotFoundException{
-        super(name, diagonal, matrix, resolution, hz, BrightDisplay, monitorFormat);
+    public TouchScreen(int resource, double presForce, String name, double brightDisplay, String matrix, double diagonal, String resolution, double hz, String monitorFormat) throws FileNotFoundException{
+        super(name, brightDisplay, matrix, diagonal, resolution, hz, monitorFormat);
         this.resource = resource;
         this.presForce = presForce;
+        status = new MonitorButton();
     }
 
     /**
      * Method simulates changing touch monitor`s resource
      */
     public void screenResource(int touches) {
-        if (status == Status.ON)
+        if (super.getStatus().getStatus() == Status.ON)
         {
             if (presForce < presForceConst) {
                 resource = resource - touches;
@@ -73,6 +75,7 @@ public class TouchScreen extends Monitor implements PresForce {
         System.out.println("Touch monitor resource  - " + resource);
         myWrite.println("Ресурс сенсорного монітора виведенно.");
     }
+
 
     @Override
     public void aboveTheNorm(int touches) {
